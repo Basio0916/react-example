@@ -1,7 +1,11 @@
 function App() {
-  const count = 10
+  const array = ['foo', 'bar', 'baz'];
   return (
-    <h1>Count is {count + 1}</h1>
+    <ul>
+      {array.map(element=>{
+        return <li>{element}</li>;
+      })}
+    </ul>
   );
 }
 
