@@ -1,12 +1,7 @@
-function App() {
-  const array = ['foo', 'bar', 'baz'];
+function Welcome(props) {
   return (
-    <ul>
-      {array.map(element=>{
-        return <li>{element}</li>;
-      })}
-    </ul>
+    <div>Hi {props.name}</div>
   );
 }
 
-export default App;
+export default Welcome;
