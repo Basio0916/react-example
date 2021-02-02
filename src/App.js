@@ -1,6 +1,7 @@
 function App() {
+  const name = "Basio";
   return (
-    <h1>Hello World</h1>
+    <h1>Hi, {name}</h1>
   );
 }
 
