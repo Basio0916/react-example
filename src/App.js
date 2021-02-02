@@ -1,7 +1,7 @@
 function App() {
-  const name = "Basio";
+  const count = 10
   return (
-    <h1>Hi, {name}</h1>
+    <h1>Count is {count + 1}</h1>
   );
 }
 
