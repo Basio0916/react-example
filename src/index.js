@@ -1,14 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import Welcome from './App';
+import Counter from './App';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Welcome name="foo"/>
-    <Welcome name="bar"/>
-    <Welcome name="baz"/>
+    <Counter/>
   </React.StrictMode>,
   document.getElementById('root')
 );
