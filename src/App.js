@@ -10,13 +10,16 @@ function Square(props) {
 
 function Board(props){
   
+  // stateの実装
+  const [squares, setSquares] = useState(Array(9).fill(null));
+
   const handleClick = (value) =>{
     alert(value);
   };
 
   const renderSquare = (value) =>{
     return(
-      <Square value={value} onClick={(value)=>handleClick(value)}/>
+      <Square value={squares[value]} onClick={(value)=>handleClick(value)}/>
     );
   };
 
