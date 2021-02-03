@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import './App.css';
 
 function Square(props) {
@@ -14,10 +14,12 @@ function Board(props){
   // stateの実装
   const [squares, setSquares] = useState(Array(9).fill(null));
   const [xIsNext, setXIsNext] = useState(true);
-
-  const status = 'Next player: ' + (xIsNext ? 'X' : 'O');
+  const [status, setStatus] = useState("");
 
   const handleClick = (value) =>{
+    if (calculateWinner(squares) || squares[value]) {
+      return;
+    }
     const newSquares = squares.slice();
     newSquares[value] = xIsNext? 'X' : 'O';
     setSquares(newSquares);
@@ -29,6 +31,16 @@ function Board(props){
       <Square value={squares[value]} onClick={()=>handleClick(value)}/>
     );
   };
+
+  useEffect(()=>{
+    const winner = calculateWinner(squares);
+    if(winner){
+      setStatus("Winner : " + winner);
+    }
+    else{
+      setStatus('Next player: ' + (xIsNext ? 'X' : 'O'));
+    }
+  })
 
   return(
     <div>
@@ -50,6 +62,26 @@ function Board(props){
       </div>
     </div>
   )
+}
+
+function calculateWinner(squares) {
+  const lines = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+  ];
+  for (let i = 0; i < lines.length; i++) {
+    const [a, b, c] = lines[i];
+    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+      return squares[a];
+    }
+  }
+  return null;
 }
 
 export default Board;
