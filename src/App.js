@@ -64,6 +64,22 @@ function Board(props){
   )
 }
 
+function Game(){
+  const [history, setHistory] = useState([{squares: Array(9).fill(null)}]);
+  const [xIsNext, setXIsNext] = useState(true);
+  return(
+    <div className="game">
+    <div className="game-board">
+      <Board />
+    </div>
+    <div className="game-info">
+      <div>{/* status */}</div>
+      <ol>{/* TODO */}</ol>
+    </div>
+  </div>
+  );
+}
+
 function calculateWinner(squares) {
   const lines = [
     [0, 1, 2],
