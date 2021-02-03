@@ -10,41 +10,15 @@ function Square(props) {
 }
 
 function Board(props){
-  
-  // stateの実装
-  const [squares, setSquares] = useState(Array(9).fill(null));
-  const [xIsNext, setXIsNext] = useState(true);
-  const [status, setStatus] = useState("");
-
-  function handleClick(value){
-    if (calculateWinner(squares) || squares[value]) {
-      return;
-    }
-    const newSquares = squares.slice();
-    newSquares[value] = xIsNext? 'X' : 'O';
-    setSquares(newSquares);
-    setXIsNext(!xIsNext);
-  };
 
   function renderSquare(value){
     return(
-      <Square value={squares[value]} onClick={()=>handleClick(value)}/>
+      <Square value={props.squares[value]} onClick={()=>props.onClick(value)}/>
     );
   };
 
-  useEffect(()=>{
-    const winner = calculateWinner(squares);
-    if(winner){
-      setStatus("Winner : " + winner);
-    }
-    else{
-      setStatus('Next player: ' + (xIsNext ? 'X' : 'O'));
-    }
-  })
-
   return(
     <div>
-      <div>{status}</div>
       <div>
         {renderSquare(0)}
         {renderSquare(1)}
@@ -66,15 +40,63 @@ function Board(props){
 
 function Game(){
   const [history, setHistory] = useState([{squares: Array(9).fill(null)}]);
+  const [squares, setSquares] = useState(Array(9).fill(null));
   const [xIsNext, setXIsNext] = useState(true);
+  const [status, setStatus] = useState("");
+  const [stepNumber, setStepNumber] = useState(0);
+
+  function jumpTo(step){
+    setStepNumber(step);
+    setXIsNext((step%2) === 0);
+  }
+
+  const moves = history.map((step, move) => {
+    const desc = move ?
+      'Go to move #' + move :
+      'Go to game start';
+    return (
+      <li key={move}>
+        <button onClick={() => jumpTo(move)}>{desc}</button>
+      </li>
+    );
+  });
+  
+  function handleClick(value){
+    const hist = history.slice(0, stepNumber + 1);
+    const current = hist[hist.length - 1];
+    
+    if (calculateWinner(current.squares) || squares[value]) {
+      return;
+    }
+    const newSquares = squares.slice();
+    newSquares[value] = xIsNext? 'X' : 'O';
+    setSquares(newSquares);
+    setXIsNext(!xIsNext);
+    setStepNumber(hist.length);
+    setHistory(hist.concat([{squares: newSquares}]));
+  };
+
+  useEffect(()=>{
+    const current = history[stepNumber];
+    setSquares(current.squares.slice());
+    const winner = calculateWinner(squares);
+    if(winner){
+      setStatus("Winner : " + winner);
+    }
+    else{
+      setStatus('Next player: ' + (xIsNext ? 'X' : 'O'));
+    }
+
+  });
+
   return(
     <div className="game">
     <div className="game-board">
-      <Board />
+      <Board squares={squares} onClick={(i)=>handleClick(i)}/>
     </div>
     <div className="game-info">
-      <div>{/* status */}</div>
-      <ol>{/* TODO */}</ol>
+      <div>{ status }</div>
+      <ol>{moves}</ol>
     </div>
   </div>
   );
@@ -100,4 +122,4 @@ function calculateWinner(squares) {
   return null;
 }
 
-export default Board;
+export default Game;
