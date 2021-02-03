@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
+import './App.css';
 
 function Square(props) {
   return (
-    <button className="square" onClick={()=>{props.onClick(props.value)}}>
+    <button className="square" onClick={()=>{props.onClick()}}>
       {props.value}
     </button>
   );
@@ -14,12 +15,14 @@ function Board(props){
   const [squares, setSquares] = useState(Array(9).fill(null));
 
   const handleClick = (value) =>{
-    alert(value);
+    const newSquares = squares.slice();
+    newSquares[value] = 'X';
+    setSquares(newSquares);
   };
 
   const renderSquare = (value) =>{
     return(
-      <Square value={squares[value]} onClick={(value)=>handleClick(value)}/>
+      <Square value={squares[value]} onClick={()=>handleClick(value)}/>
     );
   };
 
