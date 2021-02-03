@@ -16,7 +16,7 @@ function Board(props){
   const [xIsNext, setXIsNext] = useState(true);
   const [status, setStatus] = useState("");
 
-  const handleClick = (value) =>{
+  function handleClick(value){
     if (calculateWinner(squares) || squares[value]) {
       return;
     }
@@ -26,7 +26,7 @@ function Board(props){
     setXIsNext(!xIsNext);
   };
 
-  const renderSquare = (value) =>{
+  function renderSquare(value){
     return(
       <Square value={squares[value]} onClick={()=>handleClick(value)}/>
     );
