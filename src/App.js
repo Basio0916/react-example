@@ -1,15 +1,44 @@
 import React, {useState} from 'react';
 
-function Counter() {
-  const [count, setCount] = useState(0);  // 初期値0でcountを初期化 & state更新用関数setCountを定義
+function Square(props) {
   return (
-    <React.Fragment>
-      <p>Count : {count}</p>
-      <button onClick={()=>{setCount(count + 1)}}>
-        Count Up
-      </button>
-    </React.Fragment>
+    <button className="square" onClick={()=>{props.onClick(props.value)}}>
+      {props.value}
+    </button>
   );
 }
 
-export default Counter;
+function Board(props){
+  
+  const handleClick = (value) =>{
+    alert(value);
+  };
+
+  const renderSquare = (value) =>{
+    return(
+      <Square value={value} onClick={(value)=>handleClick(value)}/>
+    );
+  };
+
+  return(
+    <div>
+      <div>
+        {renderSquare(0)}
+        {renderSquare(1)}
+        {renderSquare(2)}
+      </div>
+      <div>
+        {renderSquare(3)}
+        {renderSquare(4)}
+        {renderSquare(5)}
+      </div>
+      <div>
+        {renderSquare(6)}
+        {renderSquare(7)}
+        {renderSquare(8)}
+      </div>
+    </div>
+  )
+}
+
+export default Board;
