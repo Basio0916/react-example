@@ -40,7 +40,6 @@ function Board(props){
 
 function Game(){
   const [history, setHistory] = useState([{squares: Array(9).fill(null)}]);
-  const [squares, setSquares] = useState(Array(9).fill(null));
   const [xIsNext, setXIsNext] = useState(true);
   const [status, setStatus] = useState("");
   const [stepNumber, setStepNumber] = useState(0);
@@ -65,12 +64,11 @@ function Game(){
     const hist = history.slice(0, stepNumber + 1);
     const current = hist[hist.length - 1];
     
-    if (calculateWinner(current.squares) || squares[value]) {
+    if (calculateWinner(current.squares) || current.squares[value]) {
       return;
     }
-    const newSquares = squares.slice();
+    const newSquares = current.squares.slice();
     newSquares[value] = xIsNext? 'X' : 'O';
-    setSquares(newSquares);
     setXIsNext(!xIsNext);
     setStepNumber(hist.length);
     setHistory(hist.concat([{squares: newSquares}]));
@@ -78,8 +76,7 @@ function Game(){
 
   useEffect(()=>{
     const current = history[stepNumber];
-    setSquares(current.squares.slice());
-    const winner = calculateWinner(squares);
+    const winner = calculateWinner(current.squares);
     if(winner){
       setStatus("Winner : " + winner);
     }
@@ -92,7 +89,7 @@ function Game(){
   return(
     <div className="game">
     <div className="game-board">
-      <Board squares={squares} onClick={(i)=>handleClick(i)}/>
+      <Board squares={history[stepNumber].squares} onClick={(i)=>handleClick(i)}/>
     </div>
     <div className="game-info">
       <div>{ status }</div>
